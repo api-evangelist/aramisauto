@@ -1,0 +1,190 @@
+generated: '2026-08-17'
+method: derived
+source: json-schema/_index.yml, json-schema/aramisauto-catalog-base.schema.json, probe
+  of https://api.aramisauto.com/, https://www.aramisauto.com/mentions-legales/
+note: >-
+  Cross-cutting standards assertions for Aramisauto. Aramisauto makes NO
+  compliance or certification claims on any public page — no SOC 2, ISO 27001,
+  PCI DSS, HIPAA or FedRAMP is named anywhere on aramisauto.com or
+  aramis-group.com — so no `Compliance` pointer is wired into apis.yml. Every
+  `conforms: true` below is backed by a document we fetched or a response we
+  probed; the standards that do not apply are recorded as false with the reason,
+  because an honest negative is data.
+
+conformance:
+- id: json-schema-2020-12
+  name: JSON Schema draft 2020-12
+  conforms: true
+  evidence: >-
+    All ten published schemas declare
+    "$schema": "https://json-schema.org/draft/2020-12/schema" and use 2020-12
+    keywords correctly — $defs (not definitions), $id with absolute URIs,
+    relative $ref into ./base.schema.json#/$defs/*, prefixItems-free arrays,
+    additionalProperties: false on the request envelope. All ten parse.
+  source: https://schemas.aramis.group/catalog/base.schema.json
+  scope: catalog + marketplace contracts
+- id: iso-3779-vin
+  name: ISO 3779 vehicle identification number
+  conforms: true
+  evidence: >-
+    base.schema.json $defs/vin-string constrains vin to
+    ^[A-HJ-NPR-Z0-9]{17}$ — 17 characters with I, O and Q excluded, exactly the
+    ISO 3779 / ISO 3780 character set.
+  source: https://schemas.aramis.group/catalog/base.schema.json
+- id: iso-3166-1-alpha-3
+  name: ISO 3166-1 alpha-3 country codes
+  conforms: true
+  evidence: base.schema.json $defs/country-id enumerates three-letter country codes
+    (AFG, ALA, ALB, DZA, ...) used for originCountry.
+  source: https://schemas.aramis.group/catalog/base.schema.json
+- id: euro-emission-standards
+  name: EU vehicle emission standards (Euro 1-6d)
+  conforms: true
+  evidence: $defs/euronorm-string enumerates 1, 2, 3, 4, 5, 5a, 5b, 6, 6a, 6b, 6c,
+    6d-TEMP.
+  source: https://schemas.aramis.group/catalog/base.schema.json
+  regime: EU
+- id: critair
+  name: French Crit'Air air-quality certificate
+  conforms: true
+  evidence: $defs/critair-string enumerates 0-5, the French Certificat qualité de
+    l'air classes, and critair is a required field on every Offer.
+  source: https://schemas.aramis.group/catalog/base.schema.json
+  regime: FR
+- id: nedc-wltp
+  name: NEDC and WLTP emissions/consumption test cycles
+  conforms: true
+  evidence: >-
+    The Offer contract carries co2EmissionsNedc AND co2EmissionsWltp, plus
+    electricRangeNedc and electricRangeWltp, as separate required fields — the
+    contract does not conflate the two homologation cycles.
+  source: json-schema/aramisauto-catalog-vehicle-single-language-output.schema.json
+  regime: EU
+- id: french-vehicle-genre
+  name: French carte grise "genre" codes
+  conforms: true
+  evidence: $defs/french-genre-string enumerates CAM, CL, CTTE, CYCL, MAGA, MIAR,
+    MTL, MTT1, MTT2, QM, REA, REM and further official genre codes.
+  source: https://schemas.aramis.group/catalog/base.schema.json
+  regime: FR
+- id: car-pass-belgium
+  name: Belgian Car-Pass mileage certification
+  conforms: true
+  evidence: >-
+    belgianCarpass is a required member of the Offer contract, carrying the url of
+    the vehicle's Car-Pass document — the mileage certificate mandatory for
+    second-hand vehicle sales in Belgium. belgianOtoto (the OTOTO technical
+    inspection report) sits beside it.
+  source: json-schema/aramisauto-catalog-vehicle-single-language-output.schema.json
+  regime: BE
+- id: ws-security-usernametoken
+  name: OASIS WS-Security 1.1 UsernameToken Profile
+  conforms: true
+  evidence: >-
+    api.aramisauto.com returns HTTP 403 with
+    <Errors><Error><Message>Missing WSSE Username.</Message></Error></Errors> to
+    every anonymous request, so the gateway implements a WSSE UsernameToken
+    authenticator. Observed, not documented.
+  source: https://api.aramisauto.com/
+  probed: true
+- id: gdpr
+  name: EU General Data Protection Regulation
+  conforms: true
+  evidence: >-
+    Aramisauto publishes a data-protection policy
+    (https://www.aramisauto.com/mentions-legales/politique-de-protection-des-donnees/)
+    and a cookie-consent management page
+    (https://www.aramisauto.com/mentions-legales/gerer-mes-cookies/), and the
+    llms.txt names "Mentions légales & RGPD". This is a published policy posture
+    for a French consumer business, NOT a certification and NOT an API-level
+    assertion.
+  source: https://www.aramisauto.com/mentions-legales/
+  regime: EU
+  caveat: policy-published-not-certified
+- id: rfc9457
+  name: RFC 9457 Problem Details for HTTP APIs
+  conforms: false
+  evidence: >-
+    The only observable error envelope is XML —
+    <Errors><Error><Message>...</Message></Error></Errors> with
+    content-type application/xml — not application/problem+json. The published
+    JSON Schemas define no error shape at all.
+  source: https://api.aramisauto.com/
+- id: oauth2
+  name: OAuth 2.0
+  conforms: false
+  evidence: No OAuth surface. /.well-known/oauth-authorization-server is unreachable
+    (403 on the api host, 301-with-empty-body on www).
+- id: oidc
+  name: OpenID Connect
+  conforms: false
+  evidence: /.well-known/openid-configuration returns a 301 with an empty body on
+    www.aramisauto.com and 403 on api.aramisauto.com. No discovery document exists.
+- id: openapi
+  name: OpenAPI Specification
+  conforms: false
+  evidence: >-
+    No OpenAPI or Swagger document exists on any Aramisauto or Aramis Group host.
+    /openapi.json, /openapi.yaml, /swagger.json, /v1/openapi.json, /api-docs,
+    /docs and /redoc were all probed on www.aramisauto.com (404) and
+    api.aramisauto.com (blanket 403), and no spec is referenced from the schemas
+    site or the GitHub organisation.
+- id: asyncapi
+  name: AsyncAPI
+  conforms: false
+  evidence: >-
+    No event, streaming or webhook surface is published. The marketplace ingest
+    is a scheduled CSV feed pull (collect.schema.json declares a feed `url` and a
+    csv `format` block), which is batch, not event-driven.
+- id: graphql
+  name: GraphQL
+  conforms: false
+  evidence: /graphql returns 404 on www.aramisauto.com and the blanket 403 on api.aramisauto.com.
+    No SDL is published.
+- id: rfc9116-security-txt
+  name: RFC 9116 security.txt
+  conforms: false
+  evidence: https://www.aramisauto.com/.well-known/security.txt returns 404; the control
+    path on the same host also 404s, so this is a real negative.
+- id: rfc9727-api-catalog
+  name: RFC 9727 .well-known/api-catalog
+  conforms: false
+  evidence: /.well-known/api-catalog returns a 301 with an empty body on www and 403
+    on the api host. No linkset is served.
+- id: rfc8594-sunset
+  name: RFC 8594 Sunset header
+  conforms: false
+  evidence: No Sunset or Deprecation header on any probed response, and no deprecation
+    policy is published.
+- id: idempotency-key
+  name: Idempotency-Key (draft-ietf-httpapi-idempotency-key-header)
+  conforms: false
+  evidence: No idempotency key, header or scope appears in any published schema or
+    probed response.
+- id: pagination
+  name: Explicit, documented pagination
+  conforms: true
+  evidence: >-
+    search-request.schema.json defines limit (integer, minimum 0, default 100) and
+    offset (integer, minimum 0, default 0); search-response.schema.json requires
+    total, limit and offset in every response. A machine can page this contract
+    without guessing.
+  source: json-schema/aramisauto-catalog-search-request.schema.json
+
+certifications:
+  published: []
+  note: >-
+    No named certification appears anywhere on the public surface. Probes:
+    https://www.aramis-group.com/security 404, /securite 404,
+    trust.aramisauto.com does not resolve. The only formal reporting channel is a
+    third-party ethics/whistleblowing portal
+    (https://secure.ethicspoint.eu/domain/media/fr/gui/110879/index.html) linked
+    from the legal notices — a compliance hotline, NOT a security vulnerability
+    disclosure programme and NOT a certification, so it is not credited as either.
+
+compliance_pointer_emitted: false
+compliance_pointer_reason: >-
+  `Compliance` is reserved for a published compliance programme or named
+  certifications. Aramisauto publishes neither. The regulatory conformance above
+  is EU/FR/BE automotive data regime conformance derived from its schemas, which
+  is a real and useful finding but is not a compliance attestation.

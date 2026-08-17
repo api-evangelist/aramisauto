@@ -1,24 +1,184 @@
 aid: aramisauto
 name: AramisAuto
-description: 'AramisAuto is a company surfaced as a portfolio company of serena and added to the API Evangelist
-  network as a stub for enrichment. Sector: consumer. This profile is a lead awaiting the enrichment pipeline.'
+description: 'Aramisauto is the French retail brand of Aramis Group (Euronext Paris:
+  ARAMI, majority-owned by Stellantis), founded in 2001 by Nicolas Chartier and Guillaume
+  Paoli. It sells used, 0km and new cars online as a mandataire, reconditions vehicles
+  in its own refurbishing centres, runs a trade-in service ("reprise") that pays within
+  24 hours, and arranges financing (crédit, LOA, LLD) through Cetelem, Socram, PSA
+  Banque, Lizauto and Opteven. Aramisauto operates no public developer programme: there
+  is no portal, no OpenAPI and no SDK. What it does publish is machine-readable and
+  first-party — ten JSON Schema 2020-12 contracts at schemas.aramis.group covering the
+  vehicle catalog (search request/response, the multi-language ingest model, the
+  single-language read model served from "the preheated cache for the APIs", and the
+  search-index projection) plus the four-stage collect/map/filter/enrich configuration
+  contracts third-party marketplace sellers are onboarded with — and an llms.txt at
+  the site root. Its API vhost, api.aramisauto.com, answers every anonymous request
+  with an HTTP 403 demanding a WSSE (WS-Security UsernameToken) credential.'
+image: https://website-app-static-content-ecommerce.aramisauto.com/common/icon/apple-touch-icon.png
 url: https://raw.githubusercontent.com/api-evangelist/aramisauto/refs/heads/main/apis.yml
 x-type: company
 x-source: serena-portfolio
-x-tier: stub
-x-tier-reason: portfolio-lead
 specificationVersion: '0.20'
 created: '2026-08-17'
 modified: '2026-08-17'
 tags:
 - Company
 - Consumer
-apis: []
+- Automotive
+- E-Commerce
+- Used Cars
+- Vehicle Data
+- Marketplace
+- Retail
+- Auto Finance
+- France
+- JSON Schema
+apis:
+- name: Aramisauto Vehicle Catalog Contracts
+  description: 'Aramis Group publishes the machine-readable contracts behind the Aramisauto
+    vehicle catalog as ten JSON Schema 2020-12 documents at https://schemas.aramis.group/
+    — a search request envelope (criteria/facets/order/limit/offset/fields), a search
+    response envelope (total/limit/offset/vehicles/facets with 20 pre-bucketed facet
+    aggregations), a multi-language vehicle ingest model, the single-language vehicle
+    read model the site itself describes as "the format used in the preheated cache
+    for the APIs", a flattened search-index projection, and a shared base vocabulary
+    of 29 controlled term sets and unit-bearing value objects. A companion set of four
+    schemas describes the collect → map → filter → enrich pipeline a third-party
+    marketplace seller''s inventory feed is configured with. These contracts are the
+    only published description of the API surface: no OpenAPI, Swagger, GraphQL SDL or
+    AsyncAPI document exists on any Aramisauto or Aramis Group host, and the API vhost
+    itself is credential-gated.'
+  humanURL: https://schemas.aramis.group/
+  baseURL: https://api.aramisauto.com
+  tags:
+  - Vehicle Data
+  - Catalog
+  - Search
+  - Marketplace
+  - JSON Schema
+  properties:
+  - type: JSONSchema
+    url: json-schema/_index.yml
+  - type: Examples
+    url: examples/_index.yml
+  - type: Vocabulary
+    url: vocabulary/aramisauto-vocabulary.yml
+  - type: DataModel
+    url: data-model/aramisauto-data-model.yml
+  - type: Conventions
+    url: conventions/aramisauto-conventions.yml
+  - type: Conformance
+    url: conformance/aramisauto-conformance.yml
+  - type: RateLimits
+    url: rate-limits/aramisauto-rate-limits.yml
+  - type: SchemaRegistry
+    url: https://schemas.aramis.group/
+  - type: SourceCode
+    url: https://github.com/ARAMISAUTO/schemas.aramis.group
+  x-evidence:
+    fetched: '2026-08-17'
+    schemas:
+      url: https://schemas.aramis.group/
+      http_status: 200
+      documents: 10
+      examples: 5
+      all_parse: true
+      draft: 2020-12
+    ownership: >-
+      The contracts are served from aramis.group, not aramisauto.com. Aramis Group SA
+      is the listed parent that operates the Aramisauto brand in France, the site
+      titles itself "Aramis Group Schemas", and the repository behind it
+      (github.com/ARAMISAUTO/schemas.aramis.group, CNAME schemas.aramis.group) belongs
+      to the GitHub organisation "Aramisauto.com" whose profile blog is
+      https://www.aramisauto.com. The field names are Aramisauto-specific —
+      aramisautoSupplierId, aramisautoPickupPointId, aramisautoSimpleColor,
+      aramisautoCategory, aramisautoBodywork, aramisautoEnergyType,
+      aramisautoSellingPriceWithTaxes — so these are this company's contracts, not a
+      sibling brand's.
+    base_url_probe:
+      url: https://api.aramisauto.com/
+      http_status: 403
+      content_type: application/xml; charset=utf-8
+      body: <?xml version="1.0" encoding="utf-8"?><Errors><Error><Message>Missing WSSE
+        Username.</Message></Error></Errors>
+      headers:
+        x-vhostid: api
+        x-aramisauto-application: api
+      note: >-
+        The host is real and is the group's API application vhost, but it is opaque: a
+        control path that cannot exist returns the IDENTICAL 403, so the gate sits in
+        front of routing and no individual endpoint can be confirmed from anonymous
+        probing. baseURL is recorded as the bare host for that reason — no path is
+        asserted. No public document ties a named path on this host to the published
+        catalog schemas, so that join is deliberately not claimed.
+    spec_discovery:
+      openapi: none
+      note: >-
+        Probed /openapi.json, /openapi.yaml, /swagger.json, /v1/openapi.json,
+        /api-docs, /docs, /redoc and /graphql on api.aramisauto.com (blanket 403) and
+        on www.aramisauto.com (404, with a control path also 404 — real negatives).
+        developer.aramisauto.com, developers.aramisauto.com, docs.aramis.group and
+        api.aramis.group do not resolve. /.well-known/agent-card.json and
+        /.well-known/agent.json miss on every host. No MCP endpoint is published. The
+        GitHub organisation contains no specification.
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
 common:
+- type: DomainSecurity
+  url: security/aramisauto-domain-security.yml
 - type: Website
   url: https://www.aramisauto.com/
+- type: JSONSchema
+  url: json-schema/_index.yml
+- type: Examples
+  url: examples/_index.yml
+- type: Vocabulary
+  url: vocabulary/aramisauto-vocabulary.yml
+- type: DataModel
+  url: data-model/aramisauto-data-model.yml
+- type: Conventions
+  url: conventions/aramisauto-conventions.yml
+- type: Conformance
+  url: conformance/aramisauto-conformance.yml
+- type: Packages
+  url: packages/aramisauto-packages.yml
+- type: Plans
+  url: plans/aramisauto-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/aramisauto-rate-limits.yml
+- type: LLMsTxt
+  url: llms/aramisauto-llms.txt
+- type: SchemaRegistry
+  url: https://schemas.aramis.group/
+- type: GitHubOrganization
+  url: https://github.com/ARAMISAUTO
+- type: Support
+  url: https://www.aramisauto.com/aide/faq
+- type: Contact
+  url: https://www.aramisauto.com/contact/vos-coordonnees/
+- type: Blog
+  url: https://www.aramisauto.com/guide-pratique/
+- type: TermsOfService
+  url: https://www.aramisauto.com/mentions-legales/
+- type: PrivacyPolicy
+  url: https://www.aramisauto.com/mentions-legales/politique-de-protection-des-donnees/
+- type: LegalNotices
+  url: https://www.aramisauto.com/mentions-legales/mentions-legales/
+- type: CookiePolicy
+  url: https://www.aramisauto.com/mentions-legales/gerer-mes-cookies/
+- type: About
+  url: https://www.aramisauto.com/qui-sommes-nous
+- type: ParentCompany
+  url: https://www.aramis-group.com/
+- type: LinkedIn
+  url: https://www.linkedin.com/company/aramisauto
+- type: YouTube
+  url: https://www.youtube.com/@aramisauto
+x-enrichment:
+  date: '2026-08-17'
+  status: enriched
+  artifacts_added: 29
+  pass: local-v1

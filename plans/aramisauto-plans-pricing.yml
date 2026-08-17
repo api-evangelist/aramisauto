@@ -1,0 +1,53 @@
+generated: '2026-08-17'
+method: searched
+source: https://www.aramisauto.com/sitemap.xml
+plan_count: 0
+plans: []
+note: >-
+  Aramisauto publishes no API plans, tiers, quotas or list pricing of any kind,
+  because it does not sell API access. It is a French online used- and 0km-car
+  retailer: the prices on its site are vehicle prices, and the sitemap index
+  (four child sitemaps — search, product, faq, silo) contains no developer,
+  pricing-page or plans section at all. /pricing, /tarifs, /api, /developpeurs
+  and /partenaires all return 404. The only commercial API-adjacent relationship
+  is marketplace supply — a third-party seller whose inventory is ingested via
+  the collect/map/filter/enrich configuration contracts at schemas.aramis.group —
+  and that is a negotiated business arrangement with no published price, no
+  self-serve signup and no rate card. This is an honest zero, recorded rather
+  than omitted.
+
+model: not-an-api-vendor
+self_serve: false
+free_tier: false
+api_access_sold: false
+consumer_pricing_note: >-
+  Vehicle prices ARE published, per offer, in the catalog at
+  https://www.aramisauto.com/achat/ and are carried in the published schemas
+  (catalogPriceWithOptionsWithTaxes, sellingPriceWithTaxes,
+  sellingPriceWithTakeoverWithTaxes, indicativeLoan.monthlyInstallment). Those
+  are product prices, not API plans, and are deliberately NOT recorded as plans
+  here.
+
+acquisition:
+  path: no developer or partner self-serve path published
+  marketplace_supply_contracts: json-schema/_index.yml
+  contact: https://www.aramisauto.com/contact/vos-coordonnees/
+
+evidence:
+- url: https://www.aramisauto.com/pricing
+  status: 404
+- url: https://www.aramisauto.com/tarifs
+  status: 404
+- url: https://www.aramisauto.com/api
+  status: 404
+- url: https://www.aramisauto.com/developpeurs
+  status: 404
+- url: https://www.aramisauto.com/partenaires
+  status: 404
+- url: https://www.aramisauto.com/sitemap.xml
+  status: 200
+  note: Sitemap index lists 4 child sitemaps (search, product, faq, silo). No developer
+    or pricing section exists.
+- url: https://developer.aramisauto.com/
+  status: 0
+  note: DNS does not resolve.

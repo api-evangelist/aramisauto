@@ -1,0 +1,122 @@
+generated: '2026-08-17'
+method: probed
+source: https://www.aramisauto.com/.well-known/
+note: >-
+  Every conventional /.well-known/ path was probed on both Aramisauto hosts. No
+  API-discovery document is served: security.txt, api-catalog,
+  openid-configuration, oauth-authorization-server, ai-plugin.json,
+  agent-card.json and agent.json all miss on www.aramisauto.com, and
+  api.aramisauto.com answers HTTP 403 "Missing WSSE Username" to every path
+  including a control path that cannot exist, so nothing there discriminates.
+  The one 200 is /.well-known/assetlinks.json — a real Digital Asset Links
+  document, but it is an Android/web lookalike allowlist, not an API surface.
+  NO `WellKnown` pointer is wired into apis.yml for that reason: this file
+  records an absence, and a pointer would assert Aramisauto serves an API
+  discovery surface it does not serve.
+
+pointer_emitted: false
+pointer_reason: >-
+  No probed path returned a 200 carrying an API discovery document. assetlinks.json
+  is a real document but is not a WellKnown/APICatalog surface.
+
+hosts:
+- host: www.aramisauto.com
+  paths:
+  - path: /.well-known/security.txt
+    status: 404
+    content_type: text/plain
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 301
+    file: null
+    note: 301 with an empty body; no configuration document is served.
+  - path: /.well-known/oauth-authorization-server
+    status: 301
+    file: null
+    note: 301 with an empty body.
+  - path: /.well-known/api-catalog
+    status: 301
+    file: null
+    note: 301 with an empty body; no RFC 9727 linkset.
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    content_type: application/json
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 404
+    content_type: application/json
+    file: null
+  - path: /.well-known/agent.json
+    status: 404
+    content_type: application/json
+    file: null
+  - path: /.well-known/assetlinks.json
+    status: 200
+    content_type: application/json; charset=UTF-8
+    file: aramisauto-assetlinks.json
+    document: digital-asset-links
+    note: >-
+      Real document (288 bytes, parses as a JSON array): a lookalikes/allowlist
+      naming https://emploi-aramisauto.com and https://aramisauto.com. Not an
+      API discovery surface.
+  - path: /apis.json
+    status: 404
+    file: null
+  - path: /llms.txt
+    status: 200
+    content_type: text/plain; charset=UTF-8
+    file: ../llms/aramisauto-llms.txt
+    note: >-
+      Served, and captured verbatim under llms/ — pointer wired as LLMsTxt, not
+      WellKnown (it is not a /.well-known/ path).
+  - path: /nonsense-control-xyz
+    status: 404
+    file: null
+    note: >-
+      Control path. www.aramisauto.com correctly 404s an impossible path, so the
+      404s above are real negatives and not a soft-404 pattern.
+- host: api.aramisauto.com
+  paths:
+  - path: /.well-known/security.txt
+    status: 403
+    file: null
+  - path: /.well-known/openid-configuration
+    status: 403
+    file: null
+  - path: /.well-known/oauth-authorization-server
+    status: 403
+    file: null
+  - path: /.well-known/api-catalog
+    status: 403
+    file: null
+  - path: /.well-known/ai-plugin.json
+    status: 403
+    file: null
+  - path: /.well-known/agent-card.json
+    status: 403
+    file: null
+  - path: /.well-known/agent.json
+    status: 403
+    file: null
+  - path: /nonsense-control-path-xyz
+    status: 403
+    file: null
+    note: >-
+      Control path returns the IDENTICAL 403 body ("Missing WSSE Username") as
+      every real path, so this host is OPAQUE, not gated-and-discriminating.
+      Nothing about the existence of any individual path can be concluded from
+      these 403s.
+
+x-evidence:
+  fetched: '2026-08-17'
+  api_host_challenge:
+    url: https://api.aramisauto.com/
+    http_status: 403
+    content_type: application/xml; charset=utf-8
+    body: <?xml version="1.0" encoding="utf-8"?><Errors><Error><Message>Missing WSSE
+      Username.</Message></Error></Errors>
+    response_headers:
+      server: cloudflare
+      x-vhostid: api
+      x-aramisauto-application: api
+      x-powered-by: PHP/5.6.40-100+ubuntu24.04.1+deb.sury.org+1

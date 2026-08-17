@@ -1,0 +1,46 @@
+generated: '2026-08-17'
+method: searched
+source: https://schemas.aramis.group/
+note: >-
+  Five example payloads published alongside the JSON Schemas at
+  https://schemas.aramis.group/ and linked from its index page ("Schema" +
+  "Example" for each catalog contract). Saved verbatim from the live host. Each
+  example declares the schema it validates against in its own "$schema" member,
+  pointing back at the matching schemas.aramis.group URL — these are the
+  provider's own examples, not ours.
+
+example_count: 5
+
+examples:
+- file: aramisauto-catalog-vehicle-multi-language-input.json
+  source: https://schemas.aramis.group/catalog/vehicle-multi-language-input.json
+  http_status: 200
+  validates_against: https://schemas.aramis.group/catalog/vehicle-multi-language-input.schema.json
+  schema: json-schema/aramisauto-catalog-vehicle-multi-language-input.schema.json
+  description: A complete multi-language vehicle offer as fed into the catalog.
+- file: aramisauto-catalog-vehicle-single-language-searchable-data.json
+  source: https://schemas.aramis.group/catalog/vehicle-single-language-searchable-data.json
+  http_status: 200
+  validates_against: https://schemas.aramis.group/catalog/vehicle-single-language-searchable-data.schema.json
+  schema: json-schema/aramisauto-catalog-vehicle-single-language-searchable-data.schema.json
+  description: The flattened search-index document for one vehicle offer.
+- file: aramisauto-catalog-vehicle-single-language-output.json
+  source: https://schemas.aramis.group/catalog/vehicle-single-language-output.json
+  http_status: 200
+  validates_against: https://schemas.aramis.group/catalog/vehicle-single-language-output.schema.json
+  schema: json-schema/aramisauto-catalog-vehicle-single-language-output.schema.json
+  description: The canonical single-language vehicle read model served from the cache.
+- file: aramisauto-catalog-search-request.json
+  source: https://schemas.aramis.group/catalog/search-request.json
+  http_status: 200
+  validates_against: https://schemas.aramis.group/catalog/search-request.schema.json
+  schema: json-schema/aramisauto-catalog-search-request.schema.json
+  description: >-
+    A worked vehicle search query — criteria, requested facets, sort order,
+    limit/offset and a sparse fields[] selection.
+- file: aramisauto-catalog-search-response.json
+  source: https://schemas.aramis.group/catalog/search-response.json
+  http_status: 200
+  validates_against: https://schemas.aramis.group/catalog/search-response.schema.json
+  schema: json-schema/aramisauto-catalog-search-response.schema.json
+  description: The matching search response envelope (total/limit/offset/vehicles/facets).

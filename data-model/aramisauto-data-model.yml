@@ -1,0 +1,252 @@
+generated: '2026-08-17'
+method: derived
+source: json-schema/aramisauto-catalog-vehicle-single-language-output.schema.json, json-schema/aramisauto-catalog-vehicle-multi-language-input.schema.json,
+  json-schema/aramisauto-catalog-search-request.schema.json, json-schema/aramisauto-catalog-search-response.schema.json,
+  json-schema/aramisauto-catalog-base.schema.json, json-schema/aramisauto-marketplace-map.schema.json
+note: >-
+  Derived entirely from the ten JSON Schema 2020-12 documents Aramis Group
+  publishes at https://schemas.aramis.group/. There is no OpenAPI and no object
+  reference page, so relationships were computed from `$ref` targets, from
+  nested object/array members, and from id-reference fields. Aramisauto publishes
+  no id prefixes and no ERD; nothing below is inferred from prose.
+
+root_entity: Offer
+
+entities:
+- name: Offer
+  role: aggregate-root
+  key: offerId
+  schema: json-schema/aramisauto-catalog-vehicle-single-language-output.schema.json
+  write_schema: json-schema/aramisauto-catalog-vehicle-multi-language-input.schema.json
+  description: >-
+    A commercial vehicle offer — the unit a buyer transacts on and the document
+    the search API returns. Carries identity (vin, offerId, vehicleId),
+    regulatory classification, pricing, the full technical specification, and its
+    variants.
+  required_field_count: 81
+  identity_fields:
+  - vin
+  - offerId
+  - vehicleId
+  commercial_fields:
+  - catalogPriceWithOptionsWithTaxes
+  - takeoverPremium
+  - sellingPriceWithTaxes
+  - sellingPriceWithTakeoverWithTaxes
+  - discount
+  - discountWithTakeover
+  - indicativeLoan
+  - isMarketplace
+  regulatory_fields:
+  - euronorm
+  - critair
+  - frenchFiscalPower
+  - frenchGenre
+  - belgianFiscalPower
+  - belgianOtoto
+  - belgianCarpass
+  - co2EmissionsNedc
+  - co2EmissionsWltp
+- name: Variant
+  role: child
+  key: vehicleId
+  parent: Offer
+  description: >-
+    A physically distinct vehicle sold under the same offer, differing in colour
+    and availability. Carries vehicleId, status, manufacturerColor, simpleColor,
+    simpleColor2 and photo.
+- name: Media
+  role: child
+  parent: Offer
+  description: An ordered media asset (type, url, orientation). `photo` is the single
+    primary image.
+- name: Equipment
+  role: child
+  parent: Offer
+  description: >-
+    Manufacturer equipment, each carrying a label and an equipment category
+    ($ref base#/$defs/equipment-category-id: comfort, multimedia, interior,
+    exterior, security, other).
+- name: SimpleEquipment
+  role: child
+  parent: Offer
+  description: >-
+    The searchable, controlled-vocabulary subset of equipment
+    ($ref base#/$defs/simple-equipment-id: 7-seats, air-conditioning, gps,
+    leather, leather-alcantara, alloy-wheels, reverse-radar, cruise-control,
+    sunroof, 4x4, bluetooth, reverse-camera). This is what a buyer filters on;
+    Equipment is what the manufacturer shipped.
+- name: Option
+  role: child
+  parent: Offer
+  description: A priced factory option (label, priceWithTaxes).
+- name: Promotion
+  role: child
+  parent: Offer
+  description: A merchandising promotion applied to the offer (id, label, color).
+- name: SearchQuery
+  role: request-envelope
+  schema: json-schema/aramisauto-catalog-search-request.schema.json
+  description: criteria{} + facets[] + order[] + limit/offset + fields[]. Closed to
+    unknown members.
+- name: SearchResult
+  role: response-envelope
+  schema: json-schema/aramisauto-catalog-search-response.schema.json
+  description: total + limit + offset + vehicles[] (Offer) + facets[] (FacetBucket).
+- name: FacetBucket
+  role: value-object
+  parent: SearchResult
+  description: '{ value: {id, label}, count: integer } grouped under one of 20 named
+    facets.'
+- name: SearchDocument
+  role: projection
+  schema: json-schema/aramisauto-catalog-vehicle-single-language-searchable-data.schema.json
+  description: >-
+    The flattened snake_case search-index projection of an Offer. Not a separate
+    entity in the domain — the same offer, denormalised for the search engine,
+    with id/label pairs split into parallel fields and numeric ranges
+    pre-bucketed.
+- name: MarketplacePartner
+  role: configuration-subject
+  key: aramisautoSupplierId
+  schema: json-schema/aramisauto-marketplace-collect.schema.json
+  description: >-
+    A third-party seller whose inventory flows into the Aramisauto marketplace.
+    Identified by an Aramisauto-assigned aramisautoSupplierId and bound to an
+    aramisautoPickupPointId, a feed url, a CSV format and a purchasingVatRate.
+- name: PickupPoint
+  role: referenced-entity
+  key: aramisautoPickupPointId
+  description: >-
+    A delivery/collection site referenced by integer id from both the collect and
+    map configurations. Its own contract is not published — it is a
+    reference-only entity.
+
+relationships:
+- from: Offer
+  to: Variant
+  type: has_many
+  via: variants[]
+  embedded: true
+  required: true
+- from: Offer
+  to: Media
+  type: has_many
+  via: media[]
+  embedded: true
+- from: Offer
+  to: Media
+  type: has_one
+  via: photo
+  embedded: true
+  note: The primary image, duplicated out of media[] for convenience.
+- from: Offer
+  to: Equipment
+  type: has_many
+  via: equipments[]
+  embedded: true
+- from: Offer
+  to: SimpleEquipment
+  type: has_many
+  via: simpleEquipments[]
+  embedded: true
+- from: Offer
+  to: Option
+  type: has_many
+  via: options[]
+  embedded: true
+- from: Offer
+  to: Promotion
+  type: has_many
+  via: promotions[]
+  embedded: true
+- from: Variant
+  to: Offer
+  type: belongs_to
+  via: parent offerId
+- from: SearchResult
+  to: Offer
+  type: has_many
+  via: vehicles[]
+- from: SearchResult
+  to: FacetBucket
+  type: has_many
+  via: facets[]
+- from: SearchQuery
+  to: Offer
+  type: filters
+  via: criteria{} over Offer fields
+- from: SearchDocument
+  to: Offer
+  type: projection_of
+  via: offer_id / vehicle_ids
+- from: MarketplacePartner
+  to: Offer
+  type: supplies
+  via: mapper.vehicle -> Offer field mapping
+  note: >-
+    The map configuration is literally a field-by-field mapping from a partner's
+    feed columns onto ~75 Offer fields, which is why partner ingest and the
+    catalog read model share one vocabulary.
+- from: MarketplacePartner
+  to: PickupPoint
+  type: has_one
+  via: collector.aramisautoPickupPointId
+- from: Offer
+  to: PickupPoint
+  type: belongs_to
+  via: mapper.vehicle.aramisautoPickupPointId
+  note: Present in the marketplace ingest contract; not exposed in the catalog read
+    model.
+
+controlled_vocabularies:
+  source: json-schema/aramisauto-catalog-base.schema.json
+  shared_defs_referenced_by_offer:
+  - offer-type-id
+  - status-id
+  - euronorm-string
+  - critair-string
+  - simple-color-id
+  - simple-equipment-id
+  - category-id
+  - segment-id
+  - energy-type-id
+  - french-genre-string
+  - transmission-id
+  - drive-id
+  - equipment-category-id
+  note: >-
+    Every taxonomy field on Offer is a $ref into base.schema.json rather than an
+    inline enum, so one file governs the whole catalog vocabulary. Presented to
+    clients as {id, label}.
+
+value_object_units:
+  note: >-
+    Measurements are unit-named nullable objects, not bare numbers. Reproduced
+    here because it is the modelling decision a consumer must understand first.
+  power: '{ch, kw}'
+  engineCapacity: '{cc}'
+  consumption: '{ltPer100Km, kwhPer100Km}'
+  co2Emissions: '{gramsPerKm}'
+  dimensions: '{meters}'
+  weights: '{kg}'
+  bootSpace: '{lt}'
+  maxSpeed: '{kmPerHour}'
+  electricRange: '{km}'
+  batteryCapacity: '{kwh}'
+  chargePower: '{kw}'
+  chargeTime: '{minutes}'
+  batteryStateOfHealth: '{percent}'
+  batteryWarrantyPeriod: '{km, years}'
+  indicativeLoan: '{monthlyInstallment, months}'
+  discount: '{percent}'
+
+id_prefixes:
+  published: false
+  note: >-
+    Aramisauto publishes no typed id prefixes. offerId and vehicleId are opaque
+    strings; supplier and pickup-point ids are bare integers.
+
+render: null
+render_note: No subway/ diagram exists for this provider yet; this file is the machine-readable
+  form of the graph.

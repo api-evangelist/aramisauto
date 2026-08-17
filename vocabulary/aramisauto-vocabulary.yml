@@ -1,0 +1,479 @@
+generated: '2026-08-17'
+method: derived
+source: json-schema/aramisauto-catalog-base.schema.json (https://schemas.aramis.group/catalog/base.schema.json)
+note: 'The controlled vocabulary Aramis Group publishes for its vehicle catalog. base.schema.json is a
+  pure vocabulary document: it defines no entity, only the 29 shared $defs that every other catalog schema
+  $refs. Extracted verbatim from that file — term lists are the provider''s own enum members, in the provider''s
+  own order, with nothing added, renamed or translated. Aramisauto publishes no separate glossary or term
+  registry; this is the machine-readable vocabulary it does publish.'
+registry: https://schemas.aramis.group/catalog/base.schema.json
+draft: 2020-12
+term_set_count: 29
+presentation: Every enumerated term surfaces to clients as {id, label} — the id is the stable machine
+  value listed here, the label is the localised display string.
+enumerations:
+- name: offer-type-id
+  term_count: 4
+  terms:
+  - new
+  - used
+  - 0km
+  - nearly-new
+- name: status-id
+  term_count: 4
+  terms:
+  - available
+  - sold
+  - reserved
+  - available-soon
+- name: euronorm-string
+  term_count: 13
+  terms:
+  - '1'
+  - '2'
+  - '3'
+  - '4'
+  - '5'
+  - 5a
+  - 5b
+  - '6'
+  - 6a
+  - 6b
+  - 6c
+  - 6d-TEMP
+  - 6d
+- name: critair-string
+  term_count: 6
+  terms:
+  - '0'
+  - '1'
+  - '2'
+  - '3'
+  - '4'
+  - '5'
+- name: simple-color-id
+  term_count: 12
+  terms:
+  - white
+  - black
+  - silver
+  - grey
+  - blue
+  - red
+  - green
+  - yellow
+  - brown
+  - orange
+  - beige
+  - other
+- name: simple-equipment-id
+  term_count: 15
+  terms:
+  - 7-seats
+  - air-conditioning
+  - gps
+  - leather
+  - leather-alcantara
+  - alloy-wheels
+  - reverse-radar
+  - cruise-control
+  - sunroof
+  - 4x4
+  - bluetooth
+  - reverse-camera
+  - apple-carplay
+  - android-auto
+  - high-seat,
+- name: country-id
+  term_count: 249
+  terms:
+  - AFG
+  - ALA
+  - ALB
+  - DZA
+  - ASM
+  - AND
+  - AGO
+  - AIA
+  - ATA
+  - ATG
+  - ARG
+  - ARM
+  - ABW
+  - AUS
+  - AUT
+  - AZE
+  - BHS
+  - BHR
+  - BGD
+  - BRB
+  - BLR
+  - BEL
+  - BLZ
+  - BEN
+  - BMU
+  - BTN
+  - BOL
+  - BES
+  - BIH
+  - BWA
+  - BVT
+  - BRA
+  - IOT
+  - BRN
+  - BGR
+  - BFA
+  - BDI
+  - CPV
+  - KHM
+  - CMR
+  - CAN
+  - CYM
+  - CAF
+  - TCD
+  - CHL
+  - CHN
+  - CXR
+  - CCK
+  - COL
+  - COM
+  - COD
+  - COG
+  - COK
+  - CRI
+  - CIV
+  - HRV
+  - CUB
+  - CUW
+  - CYP
+  - CZE
+  - DNK
+  - DJI
+  - DMA
+  - DOM
+  - ECU
+  - EGY
+  - SLV
+  - GNQ
+  - ERI
+  - EST
+  - SWZ
+  - ETH
+  - FLK
+  - FRO
+  - FJI
+  - FIN
+  - FRA
+  - GUF
+  - PYF
+  - ATF
+  - GAB
+  - GMB
+  - GEO
+  - DEU
+  - GHA
+  - GIB
+  - GRC
+  - GRL
+  - GRD
+  - GLP
+  - GUM
+  - GTM
+  - GGY
+  - GIN
+  - GNB
+  - GUY
+  - HTI
+  - HMD
+  - VAT
+  - HND
+  - HKG
+  - HUN
+  - ISL
+  - IND
+  - IDN
+  - IRN
+  - IRQ
+  - IRL
+  - IMN
+  - ISR
+  - ITA
+  - JAM
+  - JPN
+  - JEY
+  - JOR
+  - KAZ
+  - KEN
+  - KIR
+  - PRK
+  - KOR
+  - KWT
+  - KGZ
+  - LAO
+  - LVA
+  - LBN
+  - LSO
+  - LBR
+  - LBY
+  - LIE
+  - LTU
+  - LUX
+  - MAC
+  - MKD
+  - MDG
+  - MWI
+  - MYS
+  - MDV
+  - MLI
+  - MLT
+  - MHL
+  - MTQ
+  - MRT
+  - MUS
+  - MYT
+  - MEX
+  - FSM
+  - MDA
+  - MCO
+  - MNG
+  - MNE
+  - MSR
+  - MAR
+  - MOZ
+  - MMR
+  - NAM
+  - NRU
+  - NPL
+  - NLD
+  - NCL
+  - NZL
+  - NIC
+  - NER
+  - NGA
+  - NIU
+  - NFK
+  - MNP
+  - NOR
+  - OMN
+  - PAK
+  - PLW
+  - PSE
+  - PAN
+  - PNG
+  - PRY
+  - PER
+  - PHL
+  - PCN
+  - POL
+  - PRT
+  - PRI
+  - QAT
+  - REU
+  - ROU
+  - RUS
+  - RWA
+  - BLM
+  - SHN
+  - KNA
+  - LCA
+  - MAF
+  - SPM
+  - VCT
+  - WSM
+  - SMR
+  - STP
+  - SAU
+  - SEN
+  - SRB
+  - SYC
+  - SLE
+  - SGP
+  - SXM
+  - SVK
+  - SVN
+  - SLB
+  - SOM
+  - ZAF
+  - SGS
+  - SSD
+  - ESP
+  - LKA
+  - SDN
+  - SUR
+  - SJM
+  - SWE
+  - CHE
+  - SYR
+  - TWN
+  - TJK
+  - TZA
+  - THA
+  - TLS
+  - TGO
+  - TKL
+  - TON
+  - TTO
+  - TUN
+  - TUR
+  - TKM
+  - TCA
+  - TUV
+  - UGA
+  - UKR
+  - ARE
+  - GBR
+  - UMI
+  - USA
+  - URY
+  - UZB
+  - VUT
+  - VEN
+  - VNM
+  - VGB
+  - VIR
+  - WLF
+  - ESH
+  - YEM
+  - ZMB
+  - ZWE
+- name: category-id
+  term_count: 10
+  terms:
+  - minivan
+  - mpv
+  - sedan
+  - station-wagon
+  - urban
+  - hatchback
+  - sport
+  - convertible
+  - suv
+  - van
+- name: segment-id
+  term_count: 2
+  terms:
+  - company
+  - family
+- name: energy-type-id
+  term_count: 18
+  terms:
+  - gasoline
+  - diesel
+  - electric
+  - biodiesel
+  - ethanol
+  - lpg
+  - cng
+  - hydrogen,
+  - hybrid
+  - full-hybrid
+  - hybrid-gasoline
+  - hybrid-diesel
+  - plugin-hybrid
+  - plugin-hybrid-gasoline
+  - plugin-hybrid-diesel
+  - mild-hybrid
+  - mild-hybrid-gasoline
+  - mild-hybrid-diesel
+- name: french-genre-string
+  term_count: 25
+  terms:
+  - CAM
+  - CL
+  - CTTE
+  - CYCL
+  - MAGA
+  - MIAR
+  - MTL
+  - MTT1
+  - MTT2
+  - QM
+  - REA
+  - REM
+  - RESP
+  - RETC
+  - SRAT
+  - SREA
+  - SREM
+  - SRSP
+  - SRTC
+  - TCP
+  - TM
+  - TRA
+  - TRR
+  - VASP
+  - VP
+- name: transmission-id
+  term_count: 2
+  terms:
+  - manual
+  - automatic
+- name: drive-id
+  term_count: 3
+  terms:
+  - fwd
+  - rwd
+  - 4wd
+- name: equipment-category-id
+  term_count: 6
+  terms:
+  - comfort
+  - multimedia
+  - interior
+  - exterior
+  - security
+  - other
+unit_bearing_value_objects:
+- name: nullable-engine-capacity
+  members:
+  - cc
+- name: nullable-consumption
+  members:
+  - kwhPer100Km
+  - ltPer100Km
+- name: nullable-co2-emissions
+  members:
+  - gramsPerKm
+- name: nullable-length
+  members:
+  - meters
+- name: nullable-weight
+  members:
+  - kg
+- name: nullable-volume
+  members:
+  - lt
+- name: nullable-speed
+  members:
+  - kmPerHour
+- name: nullable-distance
+  members:
+  - km
+- name: nullable-percent-0-100
+  members:
+  - percent
+- name: nullable-energy
+  members:
+  - kwh
+- name: nullable-power
+  members:
+  - kw
+- name: nullable-current
+  members:
+  - amperes
+- name: nullable-duration-minutes
+  members:
+  - minutes
+- name: nullable-warranty-period
+  members:
+  - km
+  - years
+constrained_strings:
+- name: vin-string
+  pattern: ^[A-HJ-NPR-Z0-9]{17}$
+defects:
+- term_set: energy-type-id
+  term: hydrogen,
+  issue: Trailing comma inside the enum string as published. Reproduced verbatim because these are the
+    provider's terms, not ours; a client validating against the contract must send the comma. Worth reporting
+    upstream.

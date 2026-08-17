@@ -1,0 +1,115 @@
+{
+    "$id": "https://schemas.aramis.group/marketplace/collect.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "collector": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "partnerName": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "aramisautoSupplierId": {
+                    "type": "integer"
+                },
+                "aramisautoPickupPointId": {
+                    "type": "integer"
+                },
+                "purchasingVatRate": {
+                    "type": "number"
+                },
+                "disable": {
+                    "type": "boolean"
+                },
+                "collectOnly": {
+                    "type": "boolean"
+                },
+                "language": {
+                    "enum": ["fr", "es", "en", "nl", "de"]
+                },
+                "format": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "type": {
+                            "enum": ["csv"]
+                        },
+                        "escape": {
+                            "type": "string"
+                        },
+                        "enclosure": {
+                            "type": "string"
+                        },
+                        "separator": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "secondaryEntries": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "maxProperties": 3,
+                    "patternProperties": {
+                        "^[A-Za-z0-9_]+$": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                                "additionalProperties": false,
+                                "join": {
+                                    "type": "string"
+                                },
+                                "on": {
+                                    "type": "string"
+                                },
+                                "url": {
+                                    "type": "string"
+                                },
+                                "type": {
+                                    "enum": ["csv"]
+                                },
+                                "escape": {
+                                    "type": "string"
+                                },
+                                "enclosure": {
+                                    "type": "string"
+                                },
+                                "separator": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": ["join", "on", "url"]
+                        }
+                    }
+                },
+                "extraOperations": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "mobile.de": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                                "enabled": {
+                                    "type": "boolean",
+                                    "default": false
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "required": [
+                "partnerName",
+                "url"
+            ]
+        }
+    },
+    "required": [
+        "collector"
+    ]
+}

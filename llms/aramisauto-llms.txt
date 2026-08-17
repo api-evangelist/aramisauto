@@ -1,0 +1,70 @@
+<!-- generated: '2026-08-17' | method: searched | source: https://www.aramisauto.com/llms.txt | http_status: 200 | content-type: text/plain; charset=UTF-8 | 5522 bytes | saved verbatim, provider-published -->
+# Aramisauto - Achat de voitures d'occasion ou neuves pas chères - Mandataire auto
+
+> Mieux qu'un mandataire : achetez votre voiture neuve ou d'occasion reconditionnée au meilleur prix garanti ! Aramisauto propose également des solutions de financement et un service de reprise sans obligation d'achat.
+
+## Recherche rapide par catégorie
+
+### Carrosseries
+
+- [4x4 & SUV](https://www.aramisauto.com/achat/4x4-et-suv/): Véhicules tout-terrain et utilitaires sport ; conduite surélevée, traction intégrale, polyvalence urbaine et tout-terrain, sécurité renforcée.
+- [Citadine](https://www.aramisauto.com/achat/citadine/): Voitures compactes urbaines ; facilité de stationnement, consommation réduite, conduite en ville, manœuvrabilité optimale.
+- [Berline compacte](https://www.aramisauto.com/achat/berline-compacte/): Berlines de taille moyenne ; confort familial, coffre spacieux, équilibre entre compacité et habitabilité.
+- [Routière / grande berline](https://www.aramisauto.com/achat/routiere/): Berlines haut de gamme ; luxe, confort de conduite longue distance, prestations premium, espace généreux.
+- [Break](https://www.aramisauto.com/achat/break/): Voitures familiales avec coffre allongé ; volume de chargement maximal, polyvalence quotidienne, praticité familiale.
+- [Monospace](https://www.aramisauto.com/achat/monospace/): Véhicules familiaux spacieux ; modularité des sièges, capacité 5-7 places, volume intérieur optimisé.
+- [Ludospace](https://www.aramisauto.com/achat/ludospace/): Monospaces compacts ; praticité urbaine, habitabilité modulable, dimensions réduites pour la ville.
+- [Coupé](https://www.aramisauto.com/achat/coupe/): Voitures sportives 2 portes ; design élégant, plaisir de conduite, performances dynamiques.
+- [Cabriolet](https://www.aramisauto.com/achat/cabriolet/): Véhicules décapotables ; conduite à ciel ouvert, design premium, plaisir et liberté de conduite.
+- [Utilitaire](https://www.aramisauto.com/achat/utilitaire/): Véhicules commerciaux et professionnels ; transport de marchandises, volume de chargement, robustesse.
+
+### Motorisations
+
+- [Électrique](https://www.aramisauto.com/achat/electrique/): Véhicules 100% électriques ; zéro émission locale, silence de fonctionnement, autonomie quotidienne, recharge rapide, écologie.
+- [Hybride rechargeable](https://www.aramisauto.com/achat/hybride-rechargeable/): Motorisation hybride plug-in ; double motorisation électrique/thermique, recharge secteur, mode électrique pur, économies carburant.
+- [Hybride non-rechargeable](https://www.aramisauto.com/achat/hybride-non-rechargeable/): Hybridation auto-rechargeable ; récupération d'énergie au freinage, consommation réduite, transition écologique, fiabilité.
+- [Essence](https://www.aramisauto.com/achat/essence/): Moteurs à essence ; réactivité, souplesse de conduite, réseau de distribution étendu, coût d'acquisition abordable.
+- [Diesel](https://www.aramisauto.com/achat/diesel/): Moteurs diesel ; consommation réduite, couple élevé, longues distances, robustesse, autonomie kilométrique.
+- [GPL](https://www.aramisauto.com/achat/gpl/): Véhicules GPL bi-carburation ; carburant économique, émissions réduites, autonomie étendue, réseau stations en développement.
+- [Éthanol E85](https://www.aramisauto.com/achat/ethanol-e85/): Motorisation bioéthanol ; carburant écologique et économique, flexfuel, origine végétale, réduction CO2.
+
+### Boîte de vitesses
+
+- [Automatique](https://www.aramisauto.com/achat/automatique/): Transmission automatique ; confort de conduite, facilité d'utilisation, fluidité en ville, embouteillages, accessibilité conduite.
+- [Manuelle](https://www.aramisauto.com/achat/manuelle/): Boîte manuelle ; contrôle total, plaisir de conduite, économies à l'achat, simplicité mécanique, engagement conducteur.
+
+> **Astuce :** la structure des URL est composable :  
+> `/achat/{carrosserie}/{motorisation}/{boite}/`  
+> Exemple : `/achat/4x4-et-suv/electrique/automatique/` renvoie directement les SUV électriques à boîte automatique.
+
+## Services
+
+### Recherche
+
+- [Catalogue véhicules](https://www.aramisauto.com/achat/) : plus de 3 000 voitures filtrables par marque, modèle, budget…
+
+### Services
+
+- [Financement](https://www.aramisauto.com/financer) : comparatif Crédit, LOA, LLD.
+
+### Vente / Reprise
+
+- [Reprise & paiement 24 h](https://www.aramisauto.com/reprise/) : estimation gratuite, rachat sans obligation d'achat, virement sous 24 h.
+
+## Politiques & garanties
+
+- [Garanties & engagements](https://www.aramisauto.com) : meilleur prix garanti, satisfait ou remboursé 30 j, 0 € d'entretien 1 an.
+- [CGV véhicules 0 km & occasion](https://cms.aramisauto.com/wp-content/uploads/2023/11/2023-11-06_CGV-0km-VO.pdf)
+- [Comment ça marche ?](https://www.aramisauto.com) : présentation des 4 engagements, des étapes de commande et de livraison.
+- [Mentions légales & RGPD](https://www.aramisauto.com/mentions-legales/)
+
+## FAQ & Guide pratique
+
+- [FAQ complète](https://www.aramisauto.com/aide/faq) : réponses officielles aux questions fréquentes (garanties, aides, livraison…).
+- [Guide pratique](https://www.aramisauto.com/guide-pratique/) : articles experts sur achat/vente, financement, motorisations.
+
+## Glossaire
+
+- **Voiture 0 km** : immatriculée mais jamais roulé.
+- **Véhicule reconditionné** : occasion remise à neuf dans les usines Aramisauto.
+- **Mandataire / Distributeur** : intermédiaire négociant les prix constructeurs.

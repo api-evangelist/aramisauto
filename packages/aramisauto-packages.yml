@@ -1,0 +1,94 @@
+generated: '2026-08-17'
+method: searched
+source: https://packagist.org/packages/aramisauto/email-controller
+note: >-
+  Registry sweep across Packagist, npm, PyPI, RubyGems, crates.io, NuGet, Maven
+  Central and pkg.go.dev. Aramisauto publishes exactly one package under a
+  vendor namespace it owns — the PHP library aramisauto/email-controller on
+  Packagist — and it is NOT an API client. There is no first-party SDK for any
+  Aramisauto API in any registry, which is consistent with there being no public
+  API programme at all (see x-coverage in apis.yml). NO `SDKs` pointer is wired
+  into apis.yml: sdk_count must not be credited for a library that does not wrap
+  an Aramisauto API.
+
+package_count: 1
+official_count: 1
+sdk_count: 0
+sdk_note: >-
+  Zero API client libraries. The one official package is an inbound-email
+  processing library, abandoned since 2016.
+
+packages:
+- name: aramisauto/email-controller
+  registry: packagist
+  url: https://packagist.org/packages/aramisauto/email-controller
+  metadata_endpoint: https://repo.packagist.org/p2/aramisauto/email-controller.json
+  language: php
+  official: true
+  official_evidence: >-
+    Published under the `aramisauto` Packagist vendor namespace and sourced from
+    https://github.com/ARAMISAUTO/email-controller.git — the same GitHub
+    organisation ("Aramisauto.com", blog https://www.aramisauto.com) that
+    publishes schemas.aramis.group.
+  is_api_client: false
+  description: A modern and powerful inbound email processor.
+  version: 1.0.0
+  published: '2016-11-28'
+  release_history:
+  - version: 1.0.0
+    published: '2016-11-28'
+  - version: 0.1.0-alpha
+    published: '2013-12-30'
+  downloads_total: 2315
+  downloads_monthly: 0
+  abandoned: true
+  status: abandoned
+  repository: https://github.com/ARAMISAUTO/email-controller
+  repository_status: 404
+  note: >-
+    Packagist flags the package `abandoned` with no replacement. Latest release
+    1.0.0 is from 2016-11-28 — nine years and nine months before this pass — and
+    monthly downloads are zero. The backing GitHub repository now returns 404
+    (deleted or made private), so the source behind the published package is no
+    longer reachable even though the Packagist artifact remains installable.
+    This is a decay signal, recorded rather than dropped.
+
+registries_checked:
+- registry: packagist
+  query: https://packagist.org/packages/list.json?vendor=aramisauto
+  status: 200
+  result: 1 package (aramisauto/email-controller)
+- registry: npm
+  query: https://registry.npmjs.org/-/v1/search?text=aramisauto
+  status: 200
+  result: 0 packages
+- registry: pypi
+  query: https://pypi.org/pypi/aramisauto/json
+  status: 404
+  result: absent
+- registry: rubygems
+  result: no aramisauto/aramis-group gem found
+- registry: crates.io
+  result: no aramisauto crate found
+- registry: nuget
+  result: no aramisauto package found
+- registry: maven-central
+  result: no com.aramisauto / group.aramis coordinates found
+- registry: pkg.go.dev
+  result: no module under github.com/ARAMISAUTO found
+- registry: cdn
+  result: >-
+    No CDN-distributed first-party build. website-app-static-content-ecommerce.aramisauto.com
+    serves the storefront's own bundles, which are not a published, consumable package.
+
+github_org:
+  url: https://github.com/ARAMISAUTO
+  name: Aramisauto.com
+  public_repos: 24
+  created: '2010-11-29'
+  note: >-
+    The public org is almost entirely forks of third-party PHP/Symfony,
+    Chef/Rundeck and Docker tooling. The two non-fork, first-party artifacts are
+    schemas.aramis.group (the JSON Schema contracts captured in json-schema/) and
+    anananas, a Shell deployment framework (last pushed 2025-05-07). Neither is a
+    client SDK.

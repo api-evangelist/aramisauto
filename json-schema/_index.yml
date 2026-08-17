@@ -1,0 +1,195 @@
+generated: '2026-08-17'
+method: searched
+source: https://schemas.aramis.group/
+note: >-
+  Aramis Group publishes ten JSON Schema 2020-12 documents at
+  https://schemas.aramis.group/ — a GitHub Pages site served from
+  github.com/ARAMISAUTO/schemas.aramis.group (CNAME schemas.aramis.group) and
+  titled "Aramis Group Schemas". Every file was fetched from the live host and
+  saved verbatim; each declares
+  "$schema": "https://json-schema.org/draft/2020-12/schema" and an absolute
+  "$id" on schemas.aramis.group, so the documents identify themselves as
+  Aramis Group's own. This is the ONLY machine-readable contract surface
+  Aramisauto publishes — there is no OpenAPI, Swagger, GraphQL SDL or AsyncAPI
+  anywhere on aramisauto.com, api.aramisauto.com or aramis.group (see
+  x-coverage in apis.yml).
+
+ownership:
+  verdict: owned
+  justification: >-
+    The schemas live on aramis.group, not aramisauto.com. Aramis Group SA
+    (Euronext Paris: ARAMI) is the listed parent that operates the Aramisauto
+    brand in France, and the repository serving these files belongs to the
+    GitHub organisation "Aramisauto.com" (github.com/ARAMISAUTO), whose profile
+    blog is https://www.aramisauto.com. The schemas themselves are
+    Aramisauto-specific rather than generic group plumbing: field names include
+    aramisautoSupplierId, aramisautoPickupPointId, aramisautoSimpleColor,
+    aramisautoCategory, aramisautoBodywork, aramisautoEnergyType,
+    aramisautoPurchasingPriceWithoutTaxes and aramisautoSellingPriceWithTaxes.
+  checks:
+    schema_id_host: schemas.aramis.group
+    repo: https://github.com/ARAMISAUTO/schemas.aramis.group
+    repo_org_blog: https://www.aramisauto.com
+    site_title: Aramis Group Schemas
+
+x-evidence:
+  fetched: '2026-08-17'
+  index:
+    url: https://schemas.aramis.group/
+    http_status: 200
+  repo:
+    url: https://api.github.com/repos/ARAMISAUTO/schemas.aramis.group
+    http_status: 200
+    created_at: '2022-09-27T08:40:33Z'
+    pushed_at: '2023-01-06T11:59:14Z'
+    default_branch: master
+    note: >-
+      Last pushed 2023-01-06. The contracts are stable but not actively
+      maintained; nothing on the site or in the repo carries a version or a
+      deprecation notice.
+
+schema_count: 10
+draft: 2020-12
+
+schemas:
+- file: aramisauto-catalog-base.schema.json
+  id: https://schemas.aramis.group/catalog/base.schema.json
+  source: https://schemas.aramis.group/catalog/base.schema.json
+  http_status: 200
+  family: catalog
+  role: shared-vocabulary
+  title: Catalog base definitions
+  description: >-
+    Shared $defs referenced by every other catalog schema — controlled
+    vocabularies (offer-type-id, status-id, euronorm-string, critair-string,
+    simple-color-id, simple-equipment-id, country-id, category-id, segment-id,
+    energy-type-id, french-genre-string, transmission-id, drive-id,
+    equipment-category-id) and the nullable unit-bearing value objects
+    (engine capacity in cc, consumption in ltPer100Km/kwhPer100Km, CO2 in
+    gramsPerKm, length in meters, weight in kg, volume in lt, speed in
+    kmPerHour, distance in km, energy in kwh, power in kw, current in amperes,
+    duration in minutes, warranty period in km+years).
+  defs: 29
+- file: aramisauto-catalog-vehicle-multi-language-input.schema.json
+  id: https://schemas.aramis.group/catalog/vehicle-multi-language-input.schema.json
+  source: https://schemas.aramis.group/catalog/vehicle-multi-language-input.schema.json
+  http_status: 200
+  family: catalog
+  role: write-contract
+  title: Vehicle multi-language input
+  description: >-
+    "Use this schema to feed the catalog with new data." The multi-language
+    ingest form of a vehicle offer, keyed on vin/offerId/vehicleId and carrying
+    the French and Belgian regulatory fields (frenchFiscalPower, frenchGenre,
+    belgianFiscalPower, belgianOtoto, belgianCarpass), pricing
+    (catalogPriceWithOptionsWithTaxes, takeoverPremium, sellingPriceWithTaxes,
+    sellingPriceWithTakeoverWithTaxes, indicativeLoan) and the full technical
+    specification.
+  example: examples/aramisauto-catalog-vehicle-multi-language-input.json
+- file: aramisauto-catalog-vehicle-single-language-searchable-data.schema.json
+  id: https://schemas.aramis.group/catalog/vehicle-single-language-searchable-data.schema.json
+  source: https://schemas.aramis.group/catalog/vehicle-single-language-searchable-data.schema.json
+  http_status: 200
+  family: catalog
+  role: index-document
+  title: Vehicle single-language searchable data
+  description: >-
+    "Use this schema to feed the search engine with data." The flattened,
+    snake_case projection of a vehicle used as the search index document —
+    id/label pairs are split into parallel fields (offer_type_id +
+    offer_type_label, energy_type_id + energy_type_label) and numeric ranges
+    are pre-bucketed (mileage_km_slice, first_circulation_year).
+  example: examples/aramisauto-catalog-vehicle-single-language-searchable-data.json
+- file: aramisauto-catalog-vehicle-single-language-output.schema.json
+  id: https://schemas.aramis.group/catalog/vehicle-single-language-output.schema.json
+  source: https://schemas.aramis.group/catalog/vehicle-single-language-output.schema.json
+  http_status: 200
+  family: catalog
+  role: read-contract
+  title: Vehicle single-language output
+  description: >-
+    "This is the abstract model of a complete vehicle in a single language. It's
+    the format used in the preheated cache for the APIs." The canonical read
+    model: the same offer as the input contract, resolved to one language, with
+    computed discount / discountWithTakeover objects and a variants[] array.
+  example: examples/aramisauto-catalog-vehicle-single-language-output.json
+- file: aramisauto-catalog-search-request.schema.json
+  id: https://schemas.aramis.group/catalog/search-request.schema.json
+  source: https://schemas.aramis.group/catalog/search-request.schema.json
+  http_status: 200
+  family: catalog
+  role: request-contract
+  title: Vehicle search request
+  description: >-
+    "This is the format of the request for searching vehicles." A closed
+    (additionalProperties false) query envelope: criteria{} of 24 named
+    predicates using in[] for enumerations and min/max for ranges, facets[] to
+    request aggregations, order[] for multi-key sorting, limit/offset for
+    pagination and fields[] for sparse field selection.
+  example: examples/aramisauto-catalog-search-request.json
+- file: aramisauto-catalog-search-response.schema.json
+  id: https://schemas.aramis.group/catalog/search-response.schema.json
+  source: https://schemas.aramis.group/catalog/search-response.schema.json
+  http_status: 200
+  family: catalog
+  role: response-contract
+  title: Vehicle search response
+  description: >-
+    "This is the response of a search request." required[total, limit, offset,
+    vehicles, facets] — an offset-paginated envelope carrying the vehicle read
+    model plus 20 facet aggregations (offerType, firstCirculationYear,
+    mileage.km.slice, euronorm, critair, price slices, maker, model,
+    simpleColor, simpleEquipment, category, segment, energyType, transmission,
+    drive, promotion, doors, seats).
+  example: examples/aramisauto-catalog-search-response.json
+- file: aramisauto-marketplace-collect.schema.json
+  id: https://schemas.aramis.group/marketplace/collect.schema.json
+  source: https://schemas.aramis.group/marketplace/collect.schema.json
+  http_status: 200
+  family: marketplace
+  role: partner-configuration
+  title: Marketplace collect configuration
+  description: >-
+    Stage 1 of the marketplace partner pipeline. Declares a collector for one
+    third-party seller — partnerName, feed url, aramisautoSupplierId,
+    aramisautoPickupPointId, purchasingVatRate, language (fr/es/en/nl/de),
+    CSV format (separator/enclosure/escape), secondaryEntries and per-source
+    extraOperations (a mobile.de branch is named explicitly).
+- file: aramisauto-marketplace-map.schema.json
+  id: https://schemas.aramis.group/marketplace/map.schema.json
+  source: https://schemas.aramis.group/marketplace/map.schema.json
+  http_status: 200
+  family: marketplace
+  role: partner-configuration
+  title: Marketplace map configuration
+  description: >-
+    Stage 2. Maps a partner's own feed columns onto the Aramisauto vehicle
+    model — ~75 target fields, each accepting a literal, null or a structured
+    transform, covering identity, pricing and margin
+    (purchasingPriceWithoutTaxes, marginWithoutTaxes,
+    aramisautoSellingPriceWithTaxes), taxonomy (aramisautoSimpleColor,
+    aramisautoCategory, aramisautoBodywork, aramisautoEnergyType) and the full
+    EV battery/charging block.
+- file: aramisauto-marketplace-filter.schema.json
+  id: https://schemas.aramis.group/marketplace/filter.schema.json
+  source: https://schemas.aramis.group/marketplace/filter.schema.json
+  http_status: 200
+  family: marketplace
+  role: partner-configuration
+  title: Marketplace filter configuration
+  description: >-
+    Stage 3. Inclusion/exclusion rules[] applied to a partner's collected
+    vehicles, plus removeDuplicates and enableVehicleBlacklisted switches.
+- file: aramisauto-marketplace-enrich.schema.json
+  id: https://schemas.aramis.group/marketplace/enrich.schema.json
+  source: https://schemas.aramis.group/marketplace/enrich.schema.json
+  http_status: 200
+  family: marketplace
+  role: partner-configuration
+  title: Marketplace enrich configuration
+  description: >-
+    Stage 4. Toggles the enrichers Aramisauto runs over a partner's data when
+    the seller does not supply it — weight, category, electricCo2Emission,
+    pictogram, priceComputation, and a pictureOptimizer with crop, cropMargin,
+    blurKeywords, blurPlate (registration-plate blurring) and
+    deleteBackground operations.

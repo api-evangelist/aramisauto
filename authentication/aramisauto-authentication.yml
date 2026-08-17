@@ -1,0 +1,89 @@
+generated: '2026-08-17'
+method: probed
+source: https://api.aramisauto.com/
+note: >-
+  Aramisauto publishes NO authentication documentation — there is no developer
+  portal, no auth guide and no securityScheme anywhere, because there is no
+  published API specification (see x-coverage in apis.yml). Everything below was
+  read off the wire: api.aramisauto.com answers every request with HTTP 403 and
+  an XML body demanding a WSSE username, which identifies the scheme as OASIS
+  WS-Security UsernameToken. This is an observation, not a provider claim, and it
+  is recorded that way. No credential-issuing route is published anywhere on the
+  Aramisauto or Aramis Group surface.
+
+api_host: https://api.aramisauto.com
+documented_by_provider: false
+
+schemes:
+- id: wsse-usernametoken
+  type: custom
+  standard: OASIS WS-Security 1.1 UsernameToken Profile
+  in: header
+  header: X-WSSE
+  scheme_name: WSSE
+  transport: https
+  method: probed
+  confidence: high
+  evidence:
+    url: https://api.aramisauto.com/
+    http_status: 403
+    content_type: application/xml; charset=utf-8
+    body: <?xml version="1.0" encoding="utf-8"?><Errors><Error><Message>Missing WSSE
+      Username.</Message></Error></Errors>
+    fetched: '2026-08-17'
+  note: >-
+    "Missing WSSE Username" is the canonical error emitted by WSSE UsernameToken
+    authenticators in the PHP/Symfony ecosystem — consistent with the
+    `x-powered-by: PHP/5.6.40` and `x-aramisauto-application: api` headers the
+    same host returns. The exact header name and digest construction are NOT
+    published by Aramisauto; `X-WSSE` is the conventional carrier for this
+    profile and is recorded as the probable header, not as a documented fact.
+  credentials:
+    obtained_via: not published
+    self_serve: false
+    note: >-
+      No signup, key-issuance or partner-onboarding endpoint is published. The
+      only route into the Aramisauto commercial surface is the marketplace
+      partner relationship, whose configuration contracts are published at
+      schemas.aramis.group but whose onboarding is a business conversation.
+
+oauth2: false
+openid_connect: false
+api_keys_documented: false
+mutual_tls: false
+mtls_note: Not observed; the host completes a standard TLS 1.3 handshake without requesting
+  a client certificate.
+
+scopes:
+  published: false
+  note: >-
+    No OAuth surface, so no scope model. scopes/ is deliberately not written —
+    forcing an empty OAuthScopes artifact on a WSSE key-auth provider would be
+    fabrication.
+
+probes:
+- url: https://api.aramisauto.com/
+  status: 403
+  result: WSSE challenge
+- url: https://api.aramisauto.com/nonsense-control-path-xyz
+  status: 403
+  result: >-
+    IDENTICAL WSSE challenge for a path that cannot exist. The gate sits in front
+    of routing, so no individual path can be confirmed or denied from anonymous
+    probing. Recorded as opaque, not as evidence of any specific endpoint.
+- url: https://api.aramisauto.com/.well-known/oauth-authorization-server
+  status: 403
+  result: no authorization-server metadata reachable
+- url: https://www.aramisauto.com/.well-known/openid-configuration
+  status: 301
+  result: empty body, no OIDC discovery document
+
+pointer_emitted: false
+pointer_reason: >-
+  No `Authentication` pointer is wired into apis.yml. The scoring check it feeds
+  is `authentication_documented`, and Aramisauto documents nothing — this file is
+  OUR probe record of an undocumented gate, so pointing at it would credit the
+  provider with an auth reference it has never published. The finding is
+  preserved here and summarised in conventions/aramisauto-conventions.yml so a
+  later round can upgrade to method: searched if Aramisauto ever publishes a
+  partner auth guide.

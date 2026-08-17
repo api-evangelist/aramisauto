@@ -1,0 +1,67 @@
+generated: '2026-08-17'
+method: probed
+source: https://api.aramisauto.com/, https://www.aramisauto.com/robots.txt
+limit_count: 0
+limits: []
+note: >-
+  Aramisauto publishes no API rate limits. There is no developer documentation to
+  publish them in, and no rate-limit response header was returned by any probed
+  response. The ONLY throttling signal Aramisauto publishes anywhere is a
+  `Crawl-delay: 5` directive in robots.txt, which governs crawlers rather than API
+  clients and is recorded below as the honest nearest equivalent rather than
+  dressed up as an API limit. An agent integrating against this provider has no
+  runtime budget signal to read. Honest zero.
+
+headers_returned:
+  ratelimit_standard: none
+  x_ratelimit: none
+  retry_after: none
+  observed_on:
+  - url: https://api.aramisauto.com/
+    status: 403
+    rate_limit_headers: []
+    note: >-
+      Response carries only server/cloudflare, x-vhostid, x-aramisauto-application,
+      x-powered-by, cf-cache-status, cf-ray and a __cf_bm cookie. No
+      RateLimit-Limit / RateLimit-Remaining / RateLimit-Reset, no X-RateLimit-*,
+      no Retry-After.
+  - url: https://www.aramisauto.com/llms.txt
+    status: 200
+    rate_limit_headers: []
+
+exhaustion_status_code: unknown
+exhaustion_note: >-
+  Not observable. Every anonymous request to api.aramisauto.com is rejected at
+  the WSSE gate with 403 before any quota logic can be reached, and we do not hold
+  credentials, so the 429 behaviour (if any) cannot be established without
+  fabricating it.
+
+crawl_policy:
+  source: https://www.aramisauto.com/robots.txt
+  status: 200
+  user_agent: '*'
+  crawl_delay_seconds: 5
+  scope: web crawlers on www.aramisauto.com — NOT an API rate limit
+  note: >-
+    Recorded because it is the only published request-pacing instruction on the
+    whole surface. robots.txt also disallows ~50 filter/query patterns under
+    /achat/ (sort=, q=, filtre=, offerPageData, pricesTotal, pricesMonthly,
+    mileage, fuelTypes, ...), which tells an agent that the faceted search
+    surface is deliberately closed to crawling even though the catalog pages are
+    open.
+
+edge:
+  provider: cloudflare
+  bot_management: true
+  evidence: __cf_bm cookie and cf-ray header set on every response from both hosts.
+  note: >-
+    Traffic shaping exists at the edge but its thresholds are not published, so no
+    number can be recorded.
+
+evidence:
+- url: https://api.aramisauto.com/
+  status: 403
+- url: https://www.aramisauto.com/robots.txt
+  status: 200
+- url: https://www.aramisauto.com/llms.txt
+  status: 200

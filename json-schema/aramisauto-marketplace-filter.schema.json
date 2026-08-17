@@ -1,0 +1,34 @@
+{
+    "$id": "https://schemas.aramis.group/marketplace/filter.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "filter": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "rules": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "removeDuplicates": {
+                    "type": "boolean",
+                    "default": true
+                },
+                "enableVehicleBlacklisted": {
+                    "type": "boolean",
+                    "default": true
+                }
+            },
+            "required": [
+                "rules"
+            ]
+        }
+    },
+    "required": [
+        "filter"
+    ]
+}

@@ -1,0 +1,345 @@
+generated: '2026-08-17'
+method: derived
+source: json-schema/aramisauto-catalog-search-request.schema.json, json-schema/aramisauto-catalog-search-response.schema.json,
+  json-schema/aramisauto-catalog-base.schema.json, probe of https://api.aramisauto.com/
+note: >-
+  Aramisauto publishes no API design guide, style guide or developer
+  documentation of any kind. Every convention below is DERIVED from the ten JSON
+  Schema 2020-12 documents it does publish at https://schemas.aramis.group/, or
+  PROBED from the live api.aramisauto.com challenge response. Nothing here is
+  taken from prose: where a convention is not observable in the schemas it is
+  recorded as `unknown`, not guessed. Idempotency, rate-limit signalling,
+  request-id tracing and versioning are all genuinely absent from the published
+  contracts — see the `absent` block — so no `Idempotency` pointer is wired in
+  apis.yml.
+
+scope: >-
+  The Aramis Group vehicle catalog contracts (search + vehicle read/write model)
+  and the marketplace partner-feed configuration contracts.
+
+auth:
+  style: ws-security-usernametoken
+  transport: https
+  observed_at: https://api.aramisauto.com/
+  evidence:
+    http_status: 403
+    body: <Errors><Error><Message>Missing WSSE Username.</Message></Error></Errors>
+  documented_by_provider: false
+  note: >-
+    The API vhost demands a WSSE (OASIS WS-Security UsernameToken) credential.
+    See authentication/aramisauto-authentication.yml. No public route to obtain
+    one is published.
+
+pagination:
+  style: limit-offset
+  request_params:
+  - name: limit
+    type: integer
+    minimum: 0
+    default: 100
+  - name: offset
+    type: integer
+    minimum: 0
+    default: 0
+  response_fields:
+  - total
+  - limit
+  - offset
+  required_in_response:
+  - total
+  - limit
+  - offset
+  - vehicles
+  - facets
+  cursor: false
+  link_header: false
+  note: >-
+    Classic offset pagination. The response echoes the effective limit and offset
+    back alongside an absolute `total`, so a client can compute the last page
+    without a link header. Derived from search-request/search-response.
+
+sparse_fields:
+  supported: true
+  param: fields
+  style: array-of-enumerated-dotted-paths
+  unique_items: true
+  examples:
+  - vin
+  - offerId
+  - offerType.id
+  - offerType.label
+  - mileage.km
+  - belgianOtoto.url
+  note: >-
+    `fields[]` is a CLOSED enum in the schema, not a free-form projection: the
+    caller may only ask for paths the contract already names. Dotted paths
+    address nested members (offerType.id vs offerType.label), so id and label
+    can be selected independently.
+
+faceting:
+  supported: true
+  param: facets
+  style: array-of-enumerated-facet-names
+  unique_items: true
+  facet_count: 20
+  facets:
+  - offerType
+  - firstCirculationYear
+  - mileage.km.slice
+  - euronorm
+  - critair
+  - sellingPriceWithTaxes.slice
+  - sellingPriceWithTakeOverWithTaxes.slice
+  - indicativeLoadInstallment.slice
+  - maker
+  - model
+  - simpleColor
+  - simpleEquipment
+  - category
+  - segment
+  - energyType
+  - transmission
+  - drive
+  - promotion
+  - doors
+  - seats
+  response_shape: 'facets[]: [{ <facetName>: [{ value: {id,label}, count: <int> }] }]'
+  note: >-
+    Aggregations are opt-in per request. Numeric facets are served pre-bucketed
+    (`.slice` suffix) rather than as raw histograms.
+
+filtering:
+  style: named-predicate-objects-under-criteria
+  predicate_count: 24
+  operators:
+  - operator: in
+    shape: '{ "in": [<value>, ...] }'
+    applies_to: enumerated and identifier fields (offerType.id, maker, model, simpleColor.id,
+      simpleEquipment.id, category.id, energyType.id, transmission.id, drive.id, critair,
+      euronorm, promotion.id, offerId, vehicleId)
+  - operator: min/max
+    shape: '{ "min": <value|null>, "max": <value|null> }'
+    applies_to: range fields (firstCirculationDate, milage.km, sellingPriceWithTaxes,
+      sellingPriceWithTakeOverWithTaxes, indicativeMinimumMonthlyInstallment, indicativeMinimumMonthlyInstallmentWithTakeover,
+      doors, seats)
+  - operator: text
+    shape: '{ "text": "<free text>" }'
+    applies_to: whole-document free-text search
+  null_semantics: >-
+    An explicit null on either side of a min/max pair means "unbounded on that
+    side" — the provider's own example sends {"min": 12300, "max": null}.
+  strictness: additionalProperties is false at the request root, so unknown query
+    members are rejected rather than ignored.
+
+sorting:
+  param: order
+  style: ordered-array-of-single-key-objects
+  shape: '[{ "<field>": "asc"|"desc" }, ...]'
+  multi_key: true
+  sortable_fields:
+  - publicationDate
+  - mileage.km
+  - sellingPriceWithTaxes
+  - sellingPriceWithTakeOverWithTaxes
+  - indicativeMinimumMonthlyInstallment
+  - indicativeMinimumMonthlyInstallmentWithTakeover
+  - maker
+  - model
+  - power.ch
+  - combinedCycleConsumption.ltPer100Km
+  - combinedCycleConsumption.kwhPer100Km
+  note: >-
+    An ARRAY of single-key objects rather than a map, which is how the contract
+    preserves sort precedence in JSON.
+
+identifiers:
+  keys:
+  - name: vin
+    type: string
+    pattern: ^[A-HJ-NPR-Z0-9]{17}$
+    note: 17-character ISO 3779 VIN, excluding I/O/Q. Nullable.
+  - name: offerId
+    type: string
+    note: The commercial offer. The unit a buyer transacts on.
+  - name: vehicleId
+    type: string
+    note: The physical/technical vehicle. One offer can carry several via variants[].
+  - name: aramisautoSupplierId
+    type: integer
+    note: Marketplace partner identity, assigned by Aramisauto.
+  - name: aramisautoPickupPointId
+    type: integer
+    note: Delivery/collection site, assigned by Aramisauto.
+  prefixes: none
+  format: opaque strings, no type prefix
+
+value_objects:
+  convention: unit-bearing-nullable-objects
+  note: >-
+    The single strongest convention in these contracts: no bare numbers for
+    physical quantities. Every measurement is an object whose property NAMES the
+    unit, and the whole object is nullable so "unknown" is distinguishable from
+    zero. Defined once in base.schema.json and $ref'd everywhere.
+  units:
+    engineCapacity: cc
+    consumption: ltPer100Km | kwhPer100Km
+    co2Emissions: gramsPerKm
+    length: meters
+    weight: kg
+    volume: lt
+    speed: kmPerHour
+    distance: km
+    energy: kwh
+    power: kw
+    current: amperes
+    duration: minutes
+    percent: percent (0-100)
+    warrantyPeriod: km + years
+
+enumerations:
+  convention: id-plus-label-pairs
+  note: >-
+    Controlled vocabularies are centralised in base.schema.json $defs and always
+    surface to clients as {id, label} — the id is the stable machine value, the
+    label is the localised display string. The searchable-data projection splits
+    them into parallel scalar fields (offer_type_id / offer_type_label) because
+    an index document cannot nest.
+  vocabularies:
+    offer-type-id:
+    - new
+    - used
+    - 0km
+    - nearly-new
+    status-id:
+    - available
+    - sold
+    - reserved
+    - available-soon
+    transmission-id:
+    - manual
+    - automatic
+    drive-id:
+    - fwd
+    - rwd
+    - 4wd
+    segment-id:
+    - company
+    - family
+    category-id:
+    - minivan
+    - mpv
+    - sedan
+    - station-wagon
+    - urban
+    - hatchback
+    - sport
+    - convertible
+    - suv
+    - van
+    energy-type-id:
+    - gasoline
+    - diesel
+    - electric
+    - biodiesel
+    - ethanol
+    - lpg
+    - cng
+    - hydrogen,
+    - hybrid
+    - full-hybrid
+    - hybrid-gasoline
+    - hybrid-diesel
+    euronorm-string: 1..6d-TEMP (Euro emissions standard)
+    critair-string: 0..5 (French Crit'Air air-quality certificate)
+    french-genre-string: CAM, CL, CTTE, CYCL, MAGA, MIAR, MTL, MTT1, MTT2, QM, REA,
+      REM, ... (French vehicle genre codes)
+    country-id: ISO 3166-1 alpha-3
+  defect:
+    field: energy-type-id
+    issue: >-
+      The enum value "hydrogen," carries a trailing comma inside the string. It is
+      reproduced verbatim in json-schema/ because these files are saved as
+      published; a client validating against the contract must send the comma.
+      Worth reporting to the provider.
+
+naming:
+  request_and_read_models: camelCase with dotted paths for nested addressing
+  search_index_projection: snake_case (offer_id, offer_type_label, mileage_km_slice)
+  note: >-
+    Two deliberate naming registers: the API-facing models are camelCase, the
+    search-engine feed document is snake_case. A client that consumes both must
+    translate.
+
+localisation:
+  strategy: multi-language input, single-language output
+  languages_named:
+  - fr
+  - es
+  - en
+  - nl
+  - de
+  note: >-
+    The write contract carries all languages; the read contract and the search
+    index are resolved to one. The five languages are enumerated in the
+    marketplace collect schema and match the Aramis Group markets.
+
+error_envelope:
+  observed: true
+  format: xml-error-list
+  media_type: application/xml; charset=utf-8
+  shape: <Errors><Error><Message>...</Message></Error></Errors>
+  observed_at: https://api.aramisauto.com/
+  observed_status: 403
+  observed_message: Missing WSSE Username.
+  rfc9457: false
+  problem_json: false
+  documented_by_provider: false
+  note: >-
+    Recorded from the wire, not from docs. The published JSON Schemas define NO
+    error shape at all — search-response has no error member — so the only error
+    contract observable for Aramisauto is this XML envelope returned by the
+    gateway. One message is all an anonymous caller can see, which is why no
+    errors/ catalog artifact was written: a single probed challenge string is not
+    an error catalog.
+
+absent:
+- convention: idempotency
+  status: absent
+  detail: >-
+    No Idempotency-Key header, no idempotency scope, no retention window and no
+    request-deduplication field appears in any published schema or on any probed
+    response. The catalog contracts are read/ingest shaped and define no
+    client-supplied request key.
+  pointer_emitted: false
+- convention: rate-limit-signalling
+  status: absent
+  detail: >-
+    No RateLimit-* / X-RateLimit-* headers and no Retry-After were returned by
+    any probed response, and no limits are published anywhere. See
+    rate-limits/aramisauto-rate-limits.yml.
+- convention: request-id-tracing
+  status: partial
+  detail: >-
+    No documented correlation-id request header. The gateway does return
+    `x-apache-request` (e.g. aoMLGaCLd5vQkUz9bOgvsAAAAAA) and a Cloudflare
+    `cf-ray` on every response, which are usable for support correlation but are
+    server-assigned and undocumented.
+- convention: versioning
+  status: absent
+  detail: >-
+    The schema $ids are unversioned (https://schemas.aramis.group/catalog/base.schema.json
+    with no /v1/ segment and no version member), and there is no published
+    versioning or deprecation policy. Consumers pin by git commit or not at all.
+- convention: metadata-and-expansion
+  status: absent
+  detail: >-
+    No customer-defined metadata bag and no expand parameter. Related data is
+    embedded unconditionally (variants[], equipments[], options[], media[]) and
+    trimmed with fields[] instead.
+
+cross_references:
+  authentication: authentication/aramisauto-authentication.yml
+  conformance: conformance/aramisauto-conformance.yml
+  data_model: data-model/aramisauto-data-model.yml
+  rate_limits: rate-limits/aramisauto-rate-limits.yml
+  schemas: json-schema/_index.yml
