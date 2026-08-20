@@ -32,6 +32,18 @@ tags:
 - Retail
 - Auto Finance
 - France
+- JSON-Schema
+tags_raw:
+- Company
+- Consumer
+- Automotive
+- E-Commerce
+- Used Cars
+- Vehicle Data
+- Marketplace
+- Retail
+- Auto Finance
+- France
 - JSON Schema
 apis:
 - name: Aramisauto Vehicle Catalog Contracts
@@ -51,6 +63,12 @@ apis:
   humanURL: https://schemas.aramis.group/
   baseURL: https://api.aramisauto.com
   tags:
+  - Vehicle Data
+  - Catalog
+  - Search
+  - Marketplace
+  - JSON-Schema
+  tags_raw:
   - Vehicle Data
   - Catalog
   - Search
