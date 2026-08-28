@@ -14,6 +14,18 @@ description: 'Aramisauto is the French retail brand of Aramis Group (Euronext Pa
   contracts third-party marketplace sellers are onboarded with — and an llms.txt at
   the site root. Its API vhost, api.aramisauto.com, answers every anonymous request
   with an HTTP 403 demanding a WSSE (WS-Security UsernameToken) credential.'
+deliveryModel:
+  model: unknown
+  open_source: unknown
+  commercial: true
+  callable_host: false
+  label: Delivery model not determined — needs a product licence on record
+  confidence: low
+  source:
+  - pricing
+  - repository-unlicensed
+  generated: '2026-08-28'
+  method: derived
 image: https://website-app-static-content-ecommerce.aramisauto.com/common/icon/apple-touch-icon.png
 url: https://raw.githubusercontent.com/api-evangelist/aramisauto/refs/heads/main/apis.yml
 x-type: company
