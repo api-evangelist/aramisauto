@@ -15,16 +15,19 @@ description: 'Aramisauto is the French retail brand of Aramis Group (Euronext Pa
   the site root. Its API vhost, api.aramisauto.com, answers every anonymous request
   with an HTTP 403 demanding a WSSE (WS-Security UsernameToken) credential.'
 deliveryModel:
-  model: unknown
+  model: saas
+  license_evidence:
+    not_product:
+    - aramisauto/schemas.aramis.group
   open_source: unknown
   commercial: true
   callable_host: false
-  label: Delivery model not determined — needs a product licence on record
+  label: Hosted service · you call their endpoint
   confidence: low
   source:
   - pricing
-  - repository-unlicensed
-  generated: '2026-08-28'
+  - repository-not-product
+  generated: '2026-09-25'
   method: derived
 accessModel:
   pricing: unknown
@@ -58,7 +61,7 @@ tags:
 - Retail
 - Auto Finance
 - France
-- JSON-Schema
+- JSON Schema
 tags_raw:
 - Company
 - Consumer
@@ -71,6 +74,7 @@ tags_raw:
 - Auto Finance
 - France
 - JSON Schema
+- JSON-Schema
 apis:
 - name: Aramisauto Vehicle Catalog Contracts
   description: 'Aramis Group publishes the machine-readable contracts behind the Aramisauto
@@ -93,13 +97,14 @@ apis:
   - Catalog
   - Search
   - Marketplace
-  - JSON-Schema
+  - JSON Schema
   tags_raw:
   - Vehicle Data
   - Catalog
   - Search
   - Marketplace
   - JSON Schema
+  - JSON-Schema
   properties:
   - type: JSONSchema
     url: json-schema/_index.yml
